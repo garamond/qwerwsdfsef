@@ -1,0 +1,23 @@
+name: init
+on:
+  workflow_dispatch:
+  create:
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Run main
+        run: |
+          node index.js
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS: ./service-account.json
+
+      - run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit --allow-empty -m "generated"
+          git push
